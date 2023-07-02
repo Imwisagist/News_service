@@ -1,12 +1,18 @@
-from pathlib import Path
+from os import getenv, path
 
-BASE_DIR = Path(__file__).resolve().parent.parent
+from dotenv import load_dotenv
 
-SECRET_KEY = 'django-insecure-&bf&xdyh%j-8)4fy7otc5659%2ef5m$29b18i=8)f$3!ig-+n5'
+load_dotenv()
 
-DEBUG = True
+BASE_DIR = path.dirname(path.dirname(path.abspath(__file__)))
 
-ALLOWED_HOSTS = []
+SECRET_KEY = getenv('SECRET_KEY')
+
+DEBUG = getenv('DEBUG', default=False)
+
+ALLOWED_HOSTS = [getenv('ALLOWED_HOSTS', default='*')]
+
+AUTH_USER_MODEL = 'users.Users'
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -15,6 +21,13 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    'rest_framework',
+    'rest_framework.authtoken',
+
+    'users.apps.UsersConfig',
+    'news.apps.NewsConfig',
+    'api.apps.ApiConfig',
 ]
 
 MIDDLEWARE = [
@@ -47,12 +60,24 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'config.wsgi.application'
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+if getenv('SQLLITE_SELECTED', default=True):
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': path.join(BASE_DIR, 'db.sqlite3'),
+        }
     }
-}
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': getenv('DB_ENGINE', default='django.db.backends.postgresql'),
+            'NAME': getenv('DB_NAME', default='postgres'),
+            'USER': getenv('DB_USER', default='postgres'),
+            'PASSWORD': getenv('DB_PASSWORD', default='postgres'),
+            'HOST': getenv('DB_HOST', default='localhost'),
+            'PORT': getenv('DB_PORT', default='5432')
+        }
+    }
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -69,14 +94,34 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-LANGUAGE_CODE = 'ru-ru'
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'users.authentication.CustomAuthentication',
+    ],
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticatedOrReadOnly',
+    ],
+    'DEFAULT_THROTTLE_CLASSES': [
+        'rest_framework.throttling.UserRateThrottle',
+        'rest_framework.throttling.AnonRateThrottle',
+    ],
+    'DEFAULT_THROTTLE_RATES': {
+        'user': '60/minute',
+        'anon': '10/minute',
+    },
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
+    'PAGE_SIZE': 10,
+}
 
-TIME_ZONE = 'UTC'
+LANGUAGE_CODE = 'ru'
+
+TIME_ZONE = 'Europe/Moscow'
 
 USE_I18N = True
 
 USE_TZ = True
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
+STATIC_ROOT = path.join(BASE_DIR, 'static')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
