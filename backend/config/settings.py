@@ -8,9 +8,9 @@ BASE_DIR = path.dirname(path.dirname(path.abspath(__file__)))
 
 SECRET_KEY = getenv('SECRET_KEY')
 
-DEBUG = getenv('DEBUG', default=False)
+DEBUG = getenv('DEBUG') == 'True'
 
-ALLOWED_HOSTS = [getenv('ALLOWED_HOSTS', default='*')]
+ALLOWED_HOSTS = ['*']
 
 AUTH_USER_MODEL = 'users.Users'
 
@@ -60,7 +60,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'config.wsgi.application'
 
-if getenv('SQLLITE_SELECTED', default=True):
+if getenv('SQLLITE_SELECTED') == 'True':
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.sqlite3',
@@ -71,9 +71,9 @@ else:
     DATABASES = {
         'default': {
             'ENGINE': getenv('DB_ENGINE', default='django.db.backends.postgresql'),
-            'NAME': getenv('DB_NAME', default='postgres'),
-            'USER': getenv('DB_USER', default='postgres'),
-            'PASSWORD': getenv('DB_PASSWORD', default='postgres'),
+            'NAME': getenv('POSTGRES_DB', default='postgres'),
+            'USER': getenv('POSTGRES_USER', default='postgres'),
+            'PASSWORD': getenv('POSTGRES_PASSWORD', default='postgres'),
             'HOST': getenv('DB_HOST', default='localhost'),
             'PORT': getenv('DB_PORT', default='5432')
         }
