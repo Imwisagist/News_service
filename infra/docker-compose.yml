@@ -1,22 +1,24 @@
 version: '3.8'
 services:
 
-  db:
+  database:
     image: postgres:13.0-alpine
     volumes:
       - postgres_data:/var/lib/postgresql/data/
     env_file:
       - .env
+    restart: always
     container_name: itfox_postgresql
 
 
   backend:
     build: ../backend/
+    # image: imwisagist/itfox_backend:latest
     volumes:
       - static_value:/app/static/
       - media_value:/app/media/
     depends_on:
-      - db
+      - database
     env_file:
       - .env
     restart: always

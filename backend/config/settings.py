@@ -10,6 +10,8 @@ SECRET_KEY = getenv('SECRET_KEY')
 
 DEBUG = getenv('DEBUG') == 'True'
 
+CSRF_TRUSTED_ORIGINS = ['http://csn.sytes.net:800']
+
 ALLOWED_HOSTS = ['*']
 
 AUTH_USER_MODEL = 'users.Users'
