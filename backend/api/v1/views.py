@@ -1,4 +1,3 @@
-from django.db.models import Count
 from django.shortcuts import get_object_or_404
 from rest_framework import status
 from rest_framework.authtoken.views import ObtainAuthToken

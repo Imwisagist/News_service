@@ -6,13 +6,18 @@ User = get_user_model()
 LIMIT_CHARS = 25
 
 
-class News(models.Model):
+class AbstractBaseModel(models.Model):
+    text = models.TextField('Текст')
+    pub_date = models.DateField('Дата публикации', auto_now=True)
+
+    class Meta:
+        abstract = True
+
+
+class News(AbstractBaseModel):
     title = models.CharField(
         'Заголовок',
         max_length=100,
-    )
-    text = models.TextField(
-        'Текст',
     )
     author = models.ForeignKey(
         User,
@@ -26,10 +31,6 @@ class News(models.Model):
         related_name='likes',
         blank=True,
     )
-    pub_date = models.DateField(
-        'Дата публикации',
-        auto_now=True,
-    )
 
     class Meta:
         ordering = ('-pub_date', '-id')
@@ -40,10 +41,7 @@ class News(models.Model):
         return self.title[:LIMIT_CHARS]
 
 
-class Comments(models.Model):
-    text = models.TextField(
-        'Текст комментария'
-    )
+class Comments(AbstractBaseModel):
     news = models.ForeignKey(
         News,
         on_delete=models.CASCADE,
@@ -52,13 +50,9 @@ class Comments(models.Model):
     )
     author = models.ForeignKey(
         User,
+        verbose_name='Автор',
         on_delete=models.CASCADE,
-        verbose_name='Автор комментария',
         related_name='comments',
-    )
-    pub_date = models.DateField(
-        'Дата публикации',
-        auto_now_add=True,
     )
 
     class Meta:
