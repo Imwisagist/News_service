@@ -23,7 +23,7 @@ class Migration(migrations.Migration):
             options={
                 'verbose_name': 'Комментарий',
                 'verbose_name_plural': 'Комментарии',
-                'ordering': ('pub_date',),
+                'ordering': ('pub_date', 'id'),
             },
         ),
     ]

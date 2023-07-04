@@ -15,8 +15,8 @@ class CommentSerializer(serializers.ModelSerializer):
 
 class NewsSerializer(serializers.ModelSerializer):
     author = SlugRelatedField(slug_field='username', read_only=True)
-    likes_count = serializers.IntegerField()
-    comments_count = serializers.IntegerField()
+    likes_count = serializers.ReadOnlyField(source='likes.count')
+    comments_count = serializers.ReadOnlyField(source='comments.count')
     ten_latest_comments = serializers.SerializerMethodField()
 
     @staticmethod

@@ -14,9 +14,7 @@ from .serializers import NewsSerializer, CommentSerializer
 
 class NewsViewSet(ModelViewSet):
     queryset = News.objects.all().select_related(
-        'author').prefetch_related('likes', 'comments').annotate(
-        likes_count=Count('likes'), comments_count=Count('comments'),
-    )
+        'author').prefetch_related('likes', 'comments')
     serializer_class = NewsSerializer
     permission_classes = (IsAuthenticatedOrReadOnly, IsAuthorOrReadOnly)
 

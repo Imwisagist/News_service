@@ -23,9 +23,9 @@ class Migration(migrations.Migration):
                 ('likes', models.ManyToManyField(blank=True, related_name='likes', to=settings.AUTH_USER_MODEL, verbose_name='Лайки')),
             ],
             options={
-                'verbose_name': 'Новости',
+                'verbose_name': 'Новость',
                 'verbose_name_plural': 'Новости',
-                'ordering': ('pub_date',),
+                'ordering': ('-pub_date', '-id'),
             },
         ),
     ]
