@@ -64,6 +64,8 @@ jobs:
           echo SECRET_KEY=${{ secrets.SECRET_KEY }} >> .env
           echo SU_USERNAME=${{ secrets.SU_USERNAME }} >> .env
           echo SU_PASSWORD=${{ secrets.SU_PASSWORD }} >> .env
+          echo ALLOWED_HOSTS=${{ secrets.ALLOWED_HOSTS }} >> .env
+          echo CSRF_TRUSTED_ORIGINS=${{ secrets.CSRF_TRUSTED_ORIGINS }} >> .env
           
           docker-compose up -d
           docker image prune --filter "dangling=true" -f

@@ -1,6 +1,7 @@
 from django.contrib import admin
 from django.contrib.auth.models import Group
 
+from config.settings import PAGINATION_LIMIT_IN_ADMIN_PANEL
 from .models import News, Comments
 
 
@@ -13,18 +14,17 @@ class NewsAdmin(admin.ModelAdmin):
     list_display_links = ('title',)
     search_fields = ('text',)
     list_filter = ('pub_date', 'author')
-    ordering = ('pub_date',)
+    ordering = ('-pub_date',)
     empty_value_display = '-пусто-'
+    list_per_page = PAGINATION_LIMIT_IN_ADMIN_PANEL
 
+    @admin.display(description='Количество лайков')
     def get_likes_count(self, obj):
         return obj.likes.count()
 
-    get_likes_count.short_description = 'Количество лайков'
-
+    @admin.display(description='Количество комментариев')
     def get_comments_count(self, obj):
         return obj.comments.count()
-
-    get_comments_count.short_description = 'Количество комментариев'
 
 
 @admin.register(Comments)
@@ -33,8 +33,9 @@ class CommentsAdmin(admin.ModelAdmin):
     list_display_links = ('author',)
     search_fields = ('text',)
     list_filter = ('pub_date', 'author')
-    ordering = ('pub_date',)
+    ordering = ('-pub_date',)
     empty_value_display = '-пусто-'
+    list_per_page = PAGINATION_LIMIT_IN_ADMIN_PANEL
 
 
 admin.site.unregister(Group)

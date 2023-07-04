@@ -1,4 +1,4 @@
-import os
+from os import getenv
 
 from django.conf import settings
 from django.contrib.auth import get_user_model
@@ -12,12 +12,12 @@ def create_superuser(apps, schema_editor):
     Users = get_user_model()
 
     Users.objects.create_superuser(
-        username=os.getenv('SU_USERNAME'),
-        password=os.getenv('SU_PASSWORD'),
+        username=getenv('SU_USERNAME'),
+        password=getenv('SU_PASSWORD'),
         is_active=True, is_staff=True, is_superuser=True
     )
     print(
-        f"\n  Superuser {os.getenv('SU_USERNAME')} has been created...", end=''
+        f"\n  Superuser {getenv('SU_USERNAME')} has been created...", end=''
     )
 
 

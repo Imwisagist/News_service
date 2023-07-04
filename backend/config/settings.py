@@ -10,11 +10,13 @@ SECRET_KEY = getenv('SECRET_KEY')
 
 DEBUG = getenv('DEBUG') == 'True'
 
-CSRF_TRUSTED_ORIGINS = ['http://csn.sytes.net:800']
+CSRF_TRUSTED_ORIGINS = getenv('CSRF_TRUSTED_ORIGINS').split(',')
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = getenv('ALLOWED_HOSTS').split(',')
 
 AUTH_USER_MODEL = 'users.Users'
+
+PAGINATION_LIMIT_IN_ADMIN_PANEL = 10
 
 INSTALLED_APPS = [
     'django.contrib.admin',
