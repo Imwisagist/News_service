@@ -1,6 +1,6 @@
 ![workflow](https://github.com/imwisagist/Test_for_ITFOX/actions/workflows/main.yml/badge.svg)
 
-### News
+### News_service
 The service is designed for creating and viewing news. <br>
 Users can write comments to the news and put likes.
 
